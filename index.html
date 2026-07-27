@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Học tiếng Trung — Flashcard V3.3</title>
+  
+  <!-- PWA & Mobile Meta Tags -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#263f36" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Học Tiếng Trung" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192.png" />
+
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     :root { --blue:#2563eb; --ink:#18212f; --muted:#64748b; --paper:#fff; --bg:#f3f7fc; --line:#dce5f0; --danger:#dc2626; }
@@ -67,7 +77,7 @@
     .empty { color:var(--muted); font-size:1.15rem; }
     @media(max-width:570px) { main { width:min(100% - 18px,960px); margin-top:12px; } .card { min-height:290px; } .stats { grid-template-columns:repeat(2,1fr); } .toolbar button { flex:1; } }
 
-    /* Giao diện Mộc Ngữ: giữ nguyên toàn bộ chức năng, làm mới cách trình bày. */
+    /* Giao diện Mộc Ngữ */
     :root { --ink:#22231d; --muted:#77776e; --paper:#fffdf8; --bg:#f3efe6; --line:#e5ded1; --blue:#263f36; --danger:#b64a3a; --accent:#d8874a; }
     body { min-height:100vh; background:radial-gradient(circle at 88% 5%,#e9dbc3 0,transparent 25rem),var(--bg); font-family:Inter,"Segoe UI",Arial,sans-serif; letter-spacing:.01em; }
     header { position:relative; padding:22px max(24px,calc((100vw - 1180px)/2)); text-align:left; color:var(--ink); background:transparent; border-bottom:1px solid #ded7ca; }
@@ -124,7 +134,6 @@
     @media(max-width:820px) { main { grid-template-columns:1fr; row-gap:16px; } .stats { grid-column:1; grid-row:1; position:relative; top:auto; padding-top:70px; } main > .panel:first-child { grid-column:1; grid-row:2; margin:0; } .card { grid-column:1; grid-row:3; } .nav { grid-column:1; grid-row:4; } .actions { grid-column:1; grid-row:5; } .note { grid-column:1; grid-row:6; } }
     @media(max-width:570px) { header { padding:18px 20px; } main { width:min(100% - 22px,1180px); margin-top:18px; } .toolbar button { flex:1 1 auto; } .card { min-height:330px; padding:22px; } #hanzi { font-size:5.3rem; } .nav { flex-wrap:wrap; } .actions button { flex:1 1 42%; } }
 
-    /* Cân lại theo bố cục desktop: mọi nhóm điều khiển thẳng hàng với thẻ học. */
     main { width:min(1120px,calc(100% - 40px)); grid-template-columns:294px minmax(0,1fr); column-gap:28px; }
     .toolbar { display:grid; grid-template-columns:minmax(180px,1fr) auto auto; align-items:center; }
     .toolbar #search { width:100%; min-width:0; }
@@ -143,14 +152,12 @@
     @media(max-width:820px) { .toolbar { grid-template-columns:minmax(160px,1fr) auto auto; } .filters { grid-template-columns:1fr 1fr; } .filters button { width:100%; } }
     @media(max-width:510px) { .toolbar { grid-template-columns:1fr 1fr; } .toolbar #search { grid-column:1 / -1; } .filters { grid-template-columns:1fr; } }
 
-    /* Hai hàng thao tác được căn theo tâm của thẻ lật. */
     .nav, .actions { width:100%; justify-content:center; }
     .nav { min-height:48px; padding:5px 0; }
     .actions { min-height:45px; padding:2px 0 8px; }
     .nav button, .actions button { min-height:38px; }
     @media(max-width:570px) { .nav, .actions { justify-content:center; } }
 
-    /* Màn hình nhỏ: ghi đè bố cục desktop hai cột. */
     @media(max-width:820px) {
       main { grid-template-columns:minmax(0,1fr); }
       .stats { grid-column:1; grid-row:1; }
@@ -161,7 +168,6 @@
       .note { grid-column:1; grid-row:6; }
     }
 
-    /* Điện thoại: cố định chiều rộng và căn giữa để không bị lệch/tràn ngang. */
     @media(max-width:570px) {
       html, body { width:100%; overflow-x:hidden; }
       header { padding:18px 16px; text-align:center; }
@@ -205,7 +211,17 @@
   <dialog id="practiceDialog"><section class="modal"><h2 id="practiceTitle">⌨️ Luyện gõ chữ Hán</h2><label class="practice-mode">Chế độ trả lời<select id="practiceMode"><option value="hanzi">Gõ chữ Hán</option><option value="meaning">Gõ nghĩa tiếng Việt</option></select></label><div class="practice-prompt"><span id="practicePromptLabel">Gõ tiếng Trung cho nghĩa:</span><b id="practiceMeaning"></b></div><input id="practiceAnswer" autocomplete="off" placeholder="Gõ chữ Hán tại đây" /><div id="practiceFeedback"></div><div class="modal-actions"><button id="practiceCloseBtn" class="secondary" type="button">Đóng</button><button id="practiceNextBtn" class="secondary" type="button">Từ khác</button><button id="autoNextBtn" class="secondary" type="button">⚡ Tự chuyển: Tắt</button><button id="practiceCheckBtn" type="button">Kiểm tra</button></div></section></dialog>
   <dialog id="listenDialog"><section class="modal"><h2>🎧 Luyện nghe</h2><p class="practice-subtitle">Nghe phát âm, sau đó gõ chữ Hán bạn nghe được.</p><div class="practice-prompt"><b id="listenPrompt">🔊 Nhấn Nghe để bắt đầu</b></div><input id="listenAnswer" autocomplete="off" placeholder="Gõ chữ Hán tại đây" /><div id="listenFeedback"></div><div class="modal-actions"><button id="listenCloseBtn" class="secondary" type="button">Đóng</button><button id="listenNextBtn" class="secondary" type="button">Từ khác</button><button id="listenPlayBtn" class="secondary" type="button">🔊 Nghe</button><button id="autoListenNextBtn" class="secondary" type="button">⚡ Tự chuyển: Tắt</button><button id="listenCheckBtn" type="button">Kiểm tra</button></div></section></dialog>
   <dialog id="speakDialog"><section class="modal"><h2>🎙️ Luyện phát âm</h2><p class="practice-subtitle">Đọc từ tiếng Trung vào micro. Trình duyệt sẽ nhận diện lời nói để đối chiếu.</p><div class="practice-prompt"><b id="speakTarget"></b><span id="speakPinyin"></span></div><div class="speech-result" id="speechResult">Nhấn “Bắt đầu nói”, rồi đọc từ trên.</div><div id="speakFeedback"></div><div class="modal-actions"><button id="speakCloseBtn" class="secondary" type="button">Đóng</button><button id="speakNextBtn" class="secondary" type="button">Từ khác</button><button id="speakListenBtn" class="secondary" type="button">🔊 Nghe mẫu</button><button id="autoSpeakNextBtn" class="secondary" type="button">⚡ Tự chuyển: Tắt</button><button id="speakStartBtn" type="button">🎙️ Bắt đầu nói</button></div></section></dialog>
+  
   <script>
+    // Service Worker Registration for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker registered standard WPA'))
+          .catch(err => console.error('Service Worker registration failed: ', err));
+      });
+    }
+
     const STORAGE = 'ChineseFlashcard_V33', PROGRESS = 'ChineseFlashcard_V33_progress';
     const seed = [
       {topic:'Chào hỏi',cn:'你好',py:'nǐ hǎo',vi:'Xin chào',favorite:false,known:false},
