@@ -1,23 +1,22 @@
 {
-  "name": "Học tiếng Trung — Flashcard V3.3",
   "short_name": "Học Tiếng Trung",
-  "description": "Ứng dụng flashcard học tiếng Trung thông minh với Spaced Repetition (SRS)",
-  "start_url": "./index.html",
+  "name": "Học Tiếng Trung",
+  "id": "/hoc-tieng-Trung/",
+  "start_url": "/hoc-tieng-Trung/",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
   "display": "standalone",
-  "background_color": "#f3efe6",
-  "theme_color": "#263f36",
-  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
+      "src": "icon-192.png",
       "type": "image/png",
+      "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
+      "src": "icon-512.png",
       "type": "image/png",
+      "sizes": "512x512",
       "purpose": "any maskable"
     }
   ]
